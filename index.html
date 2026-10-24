@@ -113,6 +113,30 @@
     transform: scale(1.05);
     box-shadow: 0 0 30px rgba(0,229,255,0.6);
   }
+  .den-feature {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  .den-feature img {
+    max-width: 420px;
+    width: 100%;
+    border-radius: 14px;
+    border: 2px solid rgba(0,229,255,0.5);
+    box-shadow: 0 0 30px rgba(124,77,255,0.4);
+  }
+  .den-text {
+    max-width: 480px;
+    text-align: left;
+  }
+  .den-text h3 {
+    font-size: 2rem;
+    color: #ff2d55;
+    margin-bottom: 1rem;
+  }
   footer {
     text-align: center;
     padding: 3rem;
@@ -127,7 +151,7 @@
 <div class="hero">
   <h1>WOLFSEC</h1>
   <p class="subtitle">Cybersecurity • Reverse Engineering • Truth & Tools</p>
-  <a href="#services" class="btn">ENTER THE DEN</a>
+  <a href="#den" class="btn">ENTER THE DEN</a>
 </div>
 
 <section id="services">
@@ -148,6 +172,19 @@
     <div class="card">
       <h3>🐧 DebianGang</h3>
       <p>Linux activism, open tools, and community focused on freedom, security, and truth.</p>
+    </div>
+  </div>
+</section>
+
+<section id="den">
+  <h2>The Den</h2>
+  <div class="den-feature">
+    <img src="assets/glitchbyte.jpg" alt="GlitchByte Meme Factory">
+    <div class="den-text">
+      <h3>GlitchByte</h3>
+      <p>We don't follow the system, we glitch it. Meme factory, LULZ, chaos, and the real work.</p>
+      <p style="margin:1.2rem 0;">Chaos: 100% • Sarcasm: 100% • Logic: infinite</p>
+      <a href="https://glitchbyte.alwaysdata.net/" target="_blank" class="btn">ENTER GLITCHBYTE</a>
     </div>
   </div>
 </section>
@@ -176,7 +213,6 @@
 </footer>
 
 <script>
-// Slow crossfade cycle through the images for a video-like feel
 const images = [
   'assets/content (11).jpg',
   'assets/content (10).jpg',
