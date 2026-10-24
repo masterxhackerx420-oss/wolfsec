@@ -14,19 +14,29 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    background: #000 url('assets/debiangang-room.jpg') center/cover fixed;
     color: var(--text);
     font-family: 'Segoe UI', system-ui, sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    background: #000;
   }
-  body::before {
-    content: '';
+  #bg-layer {
     position: fixed;
+    inset: -20%;
+    background: url('assets/content (11).jpg') center/cover no-repeat;
+    animation: kenburns 40s ease-in-out infinite alternate;
+    z-index: -2;
+  }
+  #bg-layer::after {
+    content: '';
+    position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 40%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.75) 70%);
-    pointer-events: none;
-    z-index: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.8) 75%);
+  }
+  @keyframes kenburns {
+    0%   { transform: scale(1)   translate(0, 0); }
+    50%  { transform: scale(1.15) translate(-3%, -2%); }
+    100% { transform: scale(1.08) translate(2%, 3%); }
   }
   .hero, section, footer { position: relative; z-index: 1; }
   .hero {
@@ -112,6 +122,8 @@
 </style>
 </head>
 <body>
+<div id="bg-layer"></div>
+
 <div class="hero">
   <h1>WOLFSEC</h1>
   <p class="subtitle">Cybersecurity • Reverse Engineering • Truth & Tools</p>
@@ -143,11 +155,11 @@
 <section id="artwork">
   <h2>The Pack</h2>
   <div class="gallery">
-    <img src="assets/debiangang-room.jpg" alt="DebianGang neural link room">
-    <img src="assets/wolfsec-moon.jpg" alt="WolfSec under the orange moon">
-    <img src="assets/virtual-revolution.jpg" alt="A storm is coming">
-    <img src="assets/chaos-room.jpg" alt="The chaotic pack">
-    <img src="assets/human-era.jpg" alt="The human era is ending">
+    <img src="assets/content (11).jpg" alt="DebianGang neural link room">
+    <img src="assets/content (10).jpg" alt="WolfSec under the orange moon">
+    <img src="assets/content (9).jpg" alt="A storm is coming">
+    <img src="assets/content (8).jpg" alt="The chaotic pack">
+    <img src="assets/content (7).jpg" alt="The human era is ending">
   </div>
 </section>
 
@@ -162,5 +174,22 @@
 <footer>
   <p>WolfSec • Operated by the Pack • DebianGang • Personal / Research Use</p>
 </footer>
+
+<script>
+// Slow crossfade cycle through the images for a video-like feel
+const images = [
+  'assets/content (11).jpg',
+  'assets/content (10).jpg',
+  'assets/content (9).jpg',
+  'assets/content (8).jpg',
+  'assets/content (7).jpg'
+];
+let idx = 0;
+const bg = document.getElementById('bg-layer');
+setInterval(() => {
+  idx = (idx + 1) % images.length;
+  bg.style.backgroundImage = `url('${images[idx]}')`;
+}, 12000);
+</script>
 </body>
 </html>
