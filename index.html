@@ -21,7 +21,7 @@
     overflow-x: hidden;
   }
   .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,6 +29,7 @@
     text-align: center;
     background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0f 70%);
     position: relative;
+    padding: 2rem;
   }
   .hero::before {
     content: '';
@@ -49,7 +50,7 @@
   .subtitle {
     font-size: 1.4rem;
     color: #aaa;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   .btn {
     display: inline-block;
@@ -68,6 +69,14 @@
     color: #000;
     box-shadow: 0 0 30px var(--accent);
   }
+  .hero-img {
+    max-width: 480px;
+    width: 90%;
+    margin: 1rem 0 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(0,229,255,0.4);
+    border: 1px solid #222;
+  }
   section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
   h2 { font-size: 2.5rem; color: var(--accent); margin-bottom: 1.5rem; text-align: center; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
@@ -80,19 +89,37 @@
   }
   .card:hover { transform: translateY(-8px); border-color: var(--accent); }
   .card h3 { color: var(--accent2); margin-bottom: 0.5rem; }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .gallery img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #222;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .gallery img:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 25px rgba(0,229,255,0.5);
+  }
   footer {
     text-align: center;
     padding: 3rem;
     color: #555;
     border-top: 1px solid #222;
   }
-  .forum-link { margin-top: 2rem; }
 </style>
 </head>
 <body>
 <div class="hero">
   <h1>WOLFSEC</h1>
   <p class="subtitle">Cybersecurity • Reverse Engineering • Truth & Tools</p>
+  <img src="https://i.imgur.com/placeholder-wolf.jpg" alt="WolfSec armored timber wolf" class="hero-img" onerror="this.src='https://picsum.photos/seed/wolfsec/600/400'">
   <a href="#services" class="btn">ENTER THE DEN</a>
 </div>
 
@@ -118,17 +145,26 @@
   </div>
 </section>
 
+<section id="artwork">
+  <h2>The Pack</h2>
+  <div class="gallery">
+    <img src="https://picsum.photos/seed/circuitwolf/600/400" alt="Circuit howling wolf">
+    <img src="https://picsum.photos/seed/neonwolf/600/400" alt="Neon cyberpunk wolf">
+    <img src="https://picsum.photos/seed/polywolf/600/400" alt="Polygonal neon wolf">
+    <img src="https://picsum.photos/seed/armorwolf/600/400" alt="Armored WolfSec">
+  </div>
+</section>
+
 <section id="forum">
   <h2>The Pack Forum</h2>
   <p style="text-align:center; margin-bottom:2rem;">Discuss security, reverse engineering, Linux tools, and the real work. No noise.</p>
-  <div style="text-align:center;" class="forum-link">
+  <div style="text-align:center;">
     <a href="forum/" class="btn">ENTER THE FORUM</a>
   </div>
 </section>
 
 <footer>
   <p>WolfSec • Operated by the Pack • DebianGang • Personal / Research Use</p>
-  <p style="margin-top:0.5rem; font-size:0.85rem;">DebianGang • Personal / Research Use</p>
 </footer>
 </body>
 </html>
