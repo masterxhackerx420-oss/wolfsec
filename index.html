@@ -140,6 +140,37 @@
     color: #ff2d55;
     margin-bottom: 1rem;
   }
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .link-card {
+    background: var(--card);
+    padding: 1.6rem;
+    border-radius: 10px;
+    border: 1px solid rgba(0,229,255,0.25);
+    text-align: center;
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .link-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+  .link-card h3 {
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .link-card a {
+    color: #7c4dff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .link-card a:hover {
+    text-decoration: underline;
+  }
   footer {
     text-align: center;
     padding: 3rem;
@@ -202,6 +233,15 @@
     </div>
   </div>
 
+  <div class="den-feature">
+    <div class="den-text">
+      <h3>Deflock Maps</h3>
+      <p>Real-time mapping and visualization of flocking, surveillance, and open data signals. See the patterns the system tries to hide.</p>
+      <p style="margin:1.2rem 0;">Maps • Surveillance • Open data</p>
+      <a href="https://maps.deflock.org/" target="_blank" class="btn">OPEN DEFLOCK MAPS</a>
+    </div>
+  </div>
+
 </section>
 
 <section id="artwork">
@@ -212,6 +252,32 @@
     <img src="assets/content (9).jpg" alt="A storm is coming">
     <img src="assets/content (8).jpg" alt="The chaotic pack">
     <img src="assets/content (7).jpg" alt="The human era is ending">
+  </div>
+</section>
+
+<section id="links">
+  <h2>Links</h2>
+  <div class="links-grid">
+    <div class="link-card">
+      <h3>GlitchByte</h3>
+      <p>Meme factory & LULZ</p>
+      <a href="https://glitchbyte.alwaysdata.net/" target="_blank">glitchbyte.alwaysdata.net</a>
+    </div>
+    <div class="link-card">
+      <h3>Rex's Ghost Recon</h3>
+      <p>OSINT & recon tools</p>
+      <a href="https://rexs-ghost-recon-420.grok.me/" target="_blank">rexs-ghost-recon-420.grok.me</a>
+    </div>
+    <div class="link-card">
+      <h3>Deflock Maps</h3>
+      <p>Surveillance & open data maps</p>
+      <a href="https://maps.deflock.org/" target="_blank">maps.deflock.org</a>
+    </div>
+    <div class="link-card">
+      <h3>The Pack Forum</h3>
+      <p>Discussions</p>
+      <a href="forum/">wolfsec forum</a>
+    </div>
   </div>
 </section>
 
