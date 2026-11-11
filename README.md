@@ -10,7 +10,7 @@ Cybersecurity, reverse engineering, and DebianGang tools.
 
 Live site: https://masterxhackerx420-oss.github.io/wolfsec/
 
-Live Desk (WolfSec Live Wire): https://wolfsec-live-wire-420.grok.me/
+Live Desk (WolfSec Array): https://wolfsec-array-web-hunter.grok.me/
 
 ## Local preview
 Open `index.html` in a browser.
