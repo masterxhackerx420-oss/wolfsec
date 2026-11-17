@@ -12,7 +12,7 @@ Live site: https://masterxhackerx420-oss.github.io/wolfsec/
 
 Live Desk (WolfSec Array): https://wolfsec-array-web-hunter.grok.me/
 
-Social Scraper: https://masterxhackerx420-oss.github.io/wolfsec/social/
+Social Scraper: https://rexs-social-scraper-wolfsec.grok.me/
 
 ## Local preview
 Open `index.html` in a browser.
