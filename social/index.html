@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rex's Social Scraper</title>
+  <meta name="description" content="Public posts, or your own account when you add an official API key. Android, Windows, and Linux installs.">
+  <meta name="theme-color" content="#141611">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,520&family=Outfit:wght@400;500;600&display=swap">
+  <style>
+    :root { --bg:#141611; --surface:#1c1f19; --fg:#f3eee4; --muted:#c4bfb2; --accent:#e0a84a; --line:#3a3f34; --ink:#2a2618; }
+    * { box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: Outfit, sans-serif; line-height: 1.5; }
+    main { max-width: 72rem; margin: 0 auto; padding: 0 1rem 4rem; }
+    .banner { position: relative; min-height: 18rem; margin: 0 -1rem 1.25rem; overflow: hidden; border-bottom: 1px solid var(--line); }
+    .banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 18% center; }
+    .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(20 22 17 / .15), rgb(20 22 17 / .88) 70%), linear-gradient(180deg, transparent 45%, var(--bg)); }
+    .copy { position: relative; z-index: 1; min-height: 18rem; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.4rem; }
+    .eyebrow { color: var(--accent); letter-spacing: .18em; text-transform: uppercase; font-size: .75rem; font-weight: 600; margin: 0; }
+    h1 { font-family: Fraunces, serif; font-style: italic; font-weight: 520; font-size: 2.7rem; line-height: .95; margin: .3rem 0 0; }
+    .lede { color: var(--muted); max-width: 38rem; }
+    .panel, .card, .report { background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; }
+    form { display: flex; flex-direction: column; gap: .75rem; padding: 1rem; }
+    .field, button, select, input { font: inherit; color: inherit; }
+    .field { display: flex; align-items: center; gap: .6rem; min-height: 3rem; background: var(--bg); border: 1px solid var(--line); border-radius: .75rem; padding: 0 .9rem; }
+    .field:focus-within { border-color: var(--accent); }
+    input, select { background: transparent; border: 0; outline: none; width: 100%; min-height: 2.75rem; }
+    select { width: auto; }
+    .run { min-height: 3rem; border: 0; border-radius: .75rem; background: var(--accent); color: var(--bg); font-weight: 600; padding: 0 1.1rem; cursor: pointer; }
+    .run:disabled { opacity: .55; }
+    .row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: 0 1rem 1rem; color: var(--muted); }
+    .ghost { min-height: 2.75rem; border: 1px solid var(--line); background: transparent; color: var(--fg); border-radius: 999px; padding: 0 .9rem; cursor: pointer; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1rem; }
+    .platform { display: flex; gap: .7rem; align-items: center; text-align: left; min-height: 4.2rem; padding: .7rem .8rem; background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: .9rem; cursor: pointer; }
+    .platform[aria-pressed="true"] { border-color: var(--accent); background: var(--ink); }
+    .mark { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: .55rem; background: var(--bg); color: var(--accent); font-size: .72rem; font-weight: 600; flex: none; }
+    small, .muted { color: var(--muted); }
+    details { margin-top: 1rem; padding: .3rem 1rem 1rem; }
+    summary { min-height: 2.75rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; }
+    .keys { display: grid; gap: .7rem; }
+    .keys label { display: grid; gap: .25rem; color: var(--muted); font-size: .85rem; }
+    .keys input { border: 1px solid var(--line); border-radius: .7rem; background: var(--bg); padding: 0 .8rem; }
+    .results { display: grid; gap: .75rem; margin-top: 1.2rem; }
+    .report { padding: .9rem 1rem; }
+    .post { border-top: 1px solid var(--line); margin-top: .8rem; padding-top: .8rem; }
+    .post p { white-space: pre-wrap; }
+    a { color: var(--accent); }
+    .installs { display: grid; gap: .75rem; margin-top: 1.6rem; }
+    .card { padding: 1rem; }
+    .card h2 { font-family: Fraunces, serif; font-weight: 520; font-size: 1.5rem; margin: 0 0 .35rem; }
+    .card a { display: inline-block; min-height: 2.75rem; margin-right: .8rem; }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @media (min-width: 768px) {
+      .banner { margin: 0 0 1.25rem; border: 1px solid var(--line); border-radius: 1.25rem; min-height: 22rem; }
+      .copy { min-height: 22rem; max-width: 34rem; margin-left: auto; padding: 2rem; }
+      h1 { font-size: 4.2rem; }
+      form { flex-direction: row; align-items: center; }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+      .keys { grid-template-columns: 1fr 1fr; }
+      .installs { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header class="banner">
+    <img src="header.jpg" alt="">
+    <div class="shade"></div>
+    <div class="copy">
+      <p class="eyebrow">Public data · your keys · no bypass</p>
+      <h1>Rex's Social Scraper</h1>
+      <p class="lede">Live reader for public Bluesky and Mastodon, plus any official API that allows a browser. Account-only results need a key you paste yourself. Android, Windows, and Linux installs are below.</p>
+    </div>
+  </header>
+
+  <section class="panel">
+    <form id="form">
+      <label class="field"><input id="query" value="python" maxlength="200" aria-label="Query" placeholder="python, or * for a home feed"></label>
+      <label class="field"><span class="muted">Limit</span>
+        <select id="limit" aria-label="Result limit"><option>10</option><option>25</option><option>50</option><option selected>100</option></select>
+      </label>
+      <button class="run" id="run" type="submit">Run search</button>
+    </form>
+    <div class="row" id="tools"></div>
+  </section>
+  <div class="grid" id="platforms"></div>
+  <details class="panel">
+    <summary>API keys for your own accounts</summary>
+    <p class="muted">Saved only in this browser. A private or account-only read goes straight from here to that platform's official API.</p>
+    <div class="keys" id="keys"></div>
+    <div class="row">
+      <button class="ghost" id="save" type="button">Save keys in this browser</button>
+      <button class="ghost" id="clear" type="button">Clear keys</button>
+    </div>
+  </details>
+  <section class="results" id="results" aria-live="polite"></section>
+  <section class="installs">
+    <article class="card">
+      <h2>Android</h2>
+      <p class="muted">Install this page from Chrome, or unzip the Termux reader.</p>
+      <button class="ghost" id="install" type="button" hidden>Install app</button>
+      <a href="https://github.com/masterxhackerx420-oss/rex-social-scraper/releases/download/v1.0.0/rex-social-scraper-android.zip">Android zip</a>
+    </article>
+    <article class="card">
+      <h2>Windows</h2>
+      <p class="muted">Unzip, then run install/windows.ps1. Python 3.9 or newer. Edge can also install this page.</p>
+      <a href="https://github.com/masterxhackerx420-oss/rex-social-scraper/releases/download/v1.0.0/rex-social-scraper-windows.zip">Windows zip</a>
+    </article>
+    <article class="card">
+      <h2>Linux</h2>
+      <p class="muted">No root. Public Reddit works from your machine, including networks that block a website.</p>
+      <a href="https://github.com/masterxhackerx420-oss/rex-social-scraper/releases/download/v1.0.0/rex-social-scraper-linux.zip">Linux zip</a>
+    </article>
+  </section>
+</main>
+<script>
+const PLATFORMS = [
+  ["bluesky","Bluesky","BS","public"],["reddit","Reddit","RD","public"],["mastodon","Mastodon","MS","public"],
+  ["youtube","YouTube","YT","key"],["twitter","X","X","key"],["instagram","Instagram","IG","key"],
+  ["facebook","Facebook","FB","key"],["tiktok","TikTok","TT","key"],["linkedin","LinkedIn","LI","key"],
+  ["threads","Threads","TH","key"],["pinterest","Pinterest","PI","key"],["twitch","Twitch","TW","key"],["tumblr","Tumblr","TB","key"]
+];
+const FIELDS = [
+  ["BLUESKY_HANDLE","Bluesky handle",false],["BLUESKY_APP_PASSWORD","Bluesky app password",true],
+  ["MASTODON_INSTANCE","Mastodon instance",false],["MASTODON_ACCESS_TOKEN","Mastodon token",true],
+  ["YOUTUBE_API_KEY","YouTube API key",true],["TWITTER_BEARER_TOKEN","X bearer token",true],
+  ["INSTAGRAM_ACCESS_TOKEN","Instagram token",true],["FACEBOOK_ACCESS_TOKEN","Facebook token",true],
+  ["TIKTOK_ACCESS_TOKEN","TikTok token",true],["LINKEDIN_ACCESS_TOKEN","LinkedIn token",true],
+  ["THREADS_ACCESS_TOKEN","Threads token",true],["PINTEREST_ACCESS_TOKEN","Pinterest token",true],
+  ["TWITCH_CLIENT_ID","Twitch client id",false],["TWITCH_ACCESS_TOKEN","Twitch token",true],
+  ["TUMBLR_API_KEY","Tumblr API key",true]
+];
+const STORE = "rex-social-scraper-keys";
+const selected = new Set(["bluesky","mastodon"]);
+let keys = {};
+try { keys = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch { keys = {}; }
+let deferred = null;
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"]/g, (ch) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+}
+function strip(html) {
+  const node = document.createElement("div");
+  node.innerHTML = html || "";
+  return node.textContent || "";
+}
+async function pull(url, options) {
+  const res = await fetch(url, options);
+  const text = await res.text();
+  if (!res.ok) throw new Error(("HTTP " + res.status + " " + text).replace(/\s+/g, " ").slice(0, 180));
+  return text ? JSON.parse(text) : {};
+}
+function bskyPosts(data, via) {
+  const rows = data.posts || (data.feed || []).map((item) => item.post);
+  return rows.filter(Boolean).map((row) => {
+    const handle = row.author?.handle || "";
+    const rkey = (row.uri || "").split("/").pop();
+    return { platform:"bluesky", author: row.author?.displayName || handle || "Bluesky", handle: handle ? "@"+handle : "", text: row.record?.text || "", url: handle && rkey ? `https://bsky.app/profile/${handle}/post/${rkey}` : "https://bsky.app", createdAt: row.record?.createdAt || "", likes: row.likeCount, replies: row.replyCount, reposts: row.repostCount, via };
+  });
+}
+async function readBluesky(query, limit) {
+  let jwt = "";
+  if (keys.BLUESKY_HANDLE && keys.BLUESKY_APP_PASSWORD) {
+    const session = await pull("https://bsky.social/xrpc/com.atproto.server.createSession", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ identifier: keys.BLUESKY_HANDLE, password: keys.BLUESKY_APP_PASSWORD }) });
+    jwt = session.accessJwt || "";
+  }
+  const via = jwt ? "your-key" : "public";
+  const headers = jwt ? { Authorization: "Bearer " + jwt } : undefined;
+  const feed = encodeURIComponent("at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot");
+  const url = query === "*" && jwt
+    ? `https://bsky.social/xrpc/app.bsky.feed.getTimeline?limit=${limit}`
+    : query === "*"
+      ? `https://api.bsky.app/xrpc/app.bsky.feed.getFeed?feed=${feed}&limit=${limit}`
+      : `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${encodeURIComponent(query)}&limit=${limit}`;
+  return bskyPosts(await pull(url, { headers }), via).slice(0, limit);
+}
+async function readMastodon(query, limit) {
+  const instance = (keys.MASTODON_INSTANCE || "mastodon.social").replace(/^https?:\/\//, "").split("/")[0];
+  const token = keys.MASTODON_ACCESS_TOKEN || "";
+  const headers = token ? { Authorization: "Bearer " + token } : undefined;
+  let url;
+  if (query === "*" && token) url = `https://${instance}/api/v1/timelines/home?limit=${limit}`;
+  else if (query === "*") url = `https://${instance}/api/v1/timelines/public?limit=${limit}`;
+  else if (token) url = `https://${instance}/api/v2/search?type=statuses&limit=${limit}&q=${encodeURIComponent(query)}`;
+  else {
+    const tag = query.replace(/^#/, "").split(/\s+/)[0].replace(/[^A-Za-z0-9_]/g, "");
+    if (!tag) throw new Error("Public Mastodon reads a tag. Add a token to search phrases.");
+    url = `https://${instance}/api/v1/timelines/tag/${encodeURIComponent(tag)}?limit=${limit}`;
+  }
+  const data = await pull(url, { headers });
+  const rows = Array.isArray(data) ? data : (data.statuses || []);
+  return rows.slice(0, limit).map((row) => ({
+    platform:"mastodon", author: row.account?.display_name || row.account?.username || "Mastodon",
+    handle: row.account?.acct ? "@"+row.account.acct : "", text: strip(row.content || ""),
+    url: row.url || "https://mastodon.social", createdAt: row.created_at || "",
+    likes: row.favourites_count, replies: row.replies_count, reposts: row.reblogs_count,
+    via: token ? "your-key" : "public"
+  }));
+}
+async function readYoutube(query, limit) {
+  const apiKey = keys.YOUTUBE_API_KEY || "";
+  if (!apiKey) throw new Error("Add a YouTube API key. It stays in this browser.");
+  const url = query === "*"
+    ? `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=${limit}&key=${encodeURIComponent(apiKey)}`
+    : `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=${limit}&q=${encodeURIComponent(query)}&key=${encodeURIComponent(apiKey)}`;
+  const data = await pull(url);
+  return (data.items || []).slice(0, limit).map((item) => {
+    const id = item.id?.videoId || item.id;
+    const snippet = item.snippet || {};
+    return { platform:"youtube", author: snippet.channelTitle || "YouTube", handle:"", text: [snippet.title, snippet.description].filter(Boolean).join("\n\n"), url: `https://www.youtube.com/watch?v=${id}`, createdAt: snippet.publishedAt || "", via:"your-key" };
+  });
+}
+const LOCAL_ONLY = "This official API does not answer a website. Use the Linux or Windows install and put the key in a .env file next to it. Reddit's public JSON works from that install on your own connection.";
+async function readOne(id, query, limit) {
+  if (id === "bluesky") return readBluesky(query, limit);
+  if (id === "mastodon") return readMastodon(query, limit);
+  if (id === "youtube") return readYoutube(query, limit);
+  if (id === "reddit") throw new Error("Reddit blocks browser pages. The Linux and Windows installs read public Reddit from your machine.");
+  throw new Error(LOCAL_ONLY);
+}
+
+function drawPlatforms() {
+  document.getElementById("platforms").innerHTML = PLATFORMS.map(([id,label,mark,auth]) =>
+    `<button type="button" class="platform" data-id="${id}" aria-pressed="${selected.has(id)}"><span class="mark">${mark}</span><span><strong>${label}</strong><br><small>${auth === "public" ? "Public" : "Your key"}</small></span></button>`
+  ).join("");
+}
+function drawKeys() {
+  document.getElementById("keys").innerHTML = FIELDS.map(([id,label,secret]) =>
+    `<label>${label}<input data-key="${id}" type="${secret ? "password" : "text"}" autocomplete="off" value="${esc(keys[id] || "")}"></label>`
+  ).join("");
+}
+function card(title, body, posts) {
+  const items = (posts || []).map((item) => `<article class="post"><p><strong>${esc(item.author)}</strong> <span class="muted">${esc(item.handle || "")}</span></p><p>${esc(item.text || "No caption.")}</p><p class="muted">${esc(item.createdAt || "")} · <a href="${esc(item.url)}" target="_blank" rel="noreferrer">Open</a></p></article>`).join("");
+  return `<article class="report"><h2>${esc(title)}</h2><p class="muted">${body}</p>${items}</article>`;
+}
+async function run() {
+  const query = document.getElementById("query").value.trim();
+  const limit = Number(document.getElementById("limit").value) || 8;
+  const ids = [...selected];
+  const button = document.getElementById("run");
+  if (!query || !ids.length) return;
+  button.disabled = true;
+  button.textContent = "Reading…";
+  document.getElementById("results").innerHTML = card("Reading", "Public Bluesky and Mastodon answer in the browser. Keyed platforms answer here only when their API allows it.", []);
+  const blocks = [];
+  for (const id of ids) {
+    const label = PLATFORMS.find((item) => item[0] === id)[1];
+    try {
+      const posts = await readOne(id, query, limit);
+      blocks.push(card(label, posts.length + " posts", posts));
+    } catch (error) {
+      blocks.push(card(label, error.message || "Stopped", []));
+    }
+  }
+  document.getElementById("results").innerHTML = blocks.join("");
+  button.disabled = false;
+  button.textContent = "Run search";
+}
+
+document.getElementById("platforms").addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button) return;
+  const id = button.dataset.id;
+  if (selected.has(id)) selected.delete(id); else selected.add(id);
+  button.setAttribute("aria-pressed", String(selected.has(id)));
+});
+document.getElementById("form").addEventListener("submit", (event) => { event.preventDefault(); run(); });
+document.getElementById("save").addEventListener("click", () => {
+  document.querySelectorAll("[data-key]").forEach((input) => { keys[input.dataset.key] = input.value.trim(); });
+  localStorage.setItem(STORE, JSON.stringify(keys));
+});
+document.getElementById("clear").addEventListener("click", () => {
+  keys = {};
+  localStorage.removeItem(STORE);
+  drawKeys();
+});
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferred = event;
+  const button = document.getElementById("install");
+  button.hidden = false;
+  button.onclick = async () => { await deferred.prompt(); };
+});
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+drawPlatforms();
+drawKeys();
+run();
+</script>
+</body>
+</html>
